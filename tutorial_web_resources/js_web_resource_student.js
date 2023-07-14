@@ -5,11 +5,12 @@ const apiEndpoint = 'https://cfainternship.api.crm.dynamics.com/api/data/v9.2/in
 function onLoad(context) {
     executionContext = context;
     formContext = context.getFormContext();
+    console.log("formContextOnLoad: ", formContext);
     // fetchStudents(); //todo: get this reading without throwing: Cannot read properties of null (reading 'insertRow')
 }
 
 function fetchStudents() {
-    console.log("formContext: ", formContext);
+    console.log("formContextFetchStudents: ", formContext);
     // Removed Xrm library implementation to retrieve data.
 
 
@@ -36,6 +37,14 @@ function fetchStudents() {
         emailCell.textContent = student.email;
         universityCell.textContent = student.university;
 
+        // Make the cells editable
+        idCell.contentEditable = 'true';
+        firstNameCell.contentEditable = 'true';
+        lastNameCell.contentEditable = 'true';
+        dobCell.contentEditable = 'true';
+        emailCell.contentEditable = 'true';
+        universityCell.contentEditable = 'true';
+
         // Create update button
         const updateButton = document.createElement('button');
         updateButton.textContent = 'Update';
@@ -57,7 +66,7 @@ function fetchStudents() {
             //     function success(result) {
             //         console.log("Record deleted successfully");
             //         // Perform operations on record deletion
-            // deleteRow(deleteButton);
+             deleteRow(deleteButton);
             //     },
             //     function(error) {
             //         console.log(error.message);
