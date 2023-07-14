@@ -52,7 +52,7 @@ function fetchStudents() {
                     deleteButton.onclick = () => {
                         // Handle delete operation
                         console.log('Delete button clicked for', nameCell.textContent);
-                        deleteRow(this);
+                        deleteRow(deleteButton);
 
                         // Delete the record from the database
                         // Xrm.WebApi.deleteRecord('in23gl_students', emailCell.textContent).then(
