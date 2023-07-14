@@ -5,13 +5,13 @@ const apiEndpoint = 'https://cfainternship.api.crm.dynamics.com/api/data/v9.2/in
 function onLoad(context) {
     executionContext = context;
     formContext = context.getFormContext();
-    fetchStudents();
+    // fetchStudents(); //todo: get this reading without throwing: Cannot read properties of null (reading 'insertRow')
 }
 
 function fetchStudents() {
     console.log("formContext: ", formContext);
-    // Define the columns to retrieve
-    const columns = ['in23gl_firstname', 'in23gl_lastname', 'in23gl_dob', 'in23gl_email', 'in23gl_university'];
+    // Removed Xrm library implementation to retrieve data.
+
 
 
     // Process the result
