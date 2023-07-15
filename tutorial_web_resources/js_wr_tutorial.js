@@ -9,10 +9,20 @@ function onLoad(context) {
     // fetchStudents(); //todo: get this reading without throwing: Cannot read properties of null (reading 'insertRow')
 }
 
-function fetchStudents() {
+function fetchStudents(formContext) {
+    // this returns null, why?
     console.log("formContextFetchStudents: ", formContext);
-    // Removed Xrm library implementation to retrieve data.
-
+    // in23gl_js_wr_student:16 Uncaught ReferenceError: Xrm is not defined
+    // at fetchStudents at HTMLButtonElement.onclick
+    // Xrm.WebApi.retrieveMultipleRecords('in23gl_student')
+    //     .then( studentData => {
+    //         console.log("StudentData: ", studentData);
+    //         console.log("studentData.entities: ", studentData.entities);
+    //     })
+    //     .catch(error => {
+    //         console.error(error)
+    //         console.log("ERROR");
+    //     });
 
 
     // Process the result
