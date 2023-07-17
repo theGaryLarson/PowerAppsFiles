@@ -95,7 +95,7 @@ function createStudent() {
 function updateStudent(id) {
 
 }
-function deleteRow(button) {
+const deleteRow = (button) => {
     // Get the row of the button
     var row = button.parentNode.parentNode;
 
