@@ -6,71 +6,16 @@ function onLoad(context) {
     executionContext = context;
     formContext = context.getFormContext();
     console.log("formContextOnLoad: ", formContext);
-    // fetchStudents(); //todo: get this reading without throwing: Cannot read properties of null (reading 'insertRow')
+    fetchStudents(formContext); //todo: get this reading without throwing: Cannot read properties of null (reading 'insertRow')
 }
 
-function fetchStudents() {
-    Xrm.WebApi.retrieveMultipleRecords('in23gl_student')
-        .then( studentData => {
-            console.log("StudentData: ", studentData);
-            console.log("studentData.entities: ", studentData.entities);
-
-            // Process the result
-            const table = document.getElementById('studentsTable');
-
-            // Loop through the data and create a table row for each student
-            studentData.entities.forEach( student => {
-
-                const row = table.insertRow();
-                const idCell = row.insertCell()
-                const firstNameCell = row.insertCell();
-                const lastNameCell = row.insertCell();
-                const dobCell = row.insertCell();
-                const emailCell = row.insertCell();
-                const universityCell = row.insertCell();
-                const actionCell = row.insertCell();
-
-                //access the data from the entities and assign to corresponding cell within the table
-                // idCell.textContent = student.pKey;
-                // firstNameCell.textContent = student.firstname;
-                // lastNameCell.textContent = student.lastname;
-                // dobCell.textContent = student.dob;
-                // emailCell.textContent = student.email;
-                // universityCell.textContent = student.university;
-
-                // Make the cells editable
-                idCell.contentEditable = 'true';
-                firstNameCell.contentEditable = 'true';
-                lastNameCell.contentEditable = 'true';
-                dobCell.contentEditable = 'true';
-                emailCell.contentEditable = 'true';
-                universityCell.contentEditable = 'true';
-
-                // Create update button
-                const updateButton = document.createElement('button');
-                updateButton.textContent = 'Update';
-                updateButton.onclick = () => {
-                    // Handle update operation
-                    console.log('Update button clicked for student', student);
-                };
-
-                // Create delete button
-                const deleteButton = document.createElement('button');
-                deleteButton.textContent = 'Delete';
-                deleteButton.onclick = () => {
-                    // Handle delete operation
-                    deleteRow(deleteButton);
-                };
-
-                // Add buttons to action cell
-                actionCell.appendChild(updateButton);
-                actionCell.appendChild(deleteButton);
-            });
-        })
-        .catch(error => {
-            console.error(error)
-            console.log("ERROR");
-        });
+function fetchStudents(formContext) {
+        console.log("formContextFetchStudents: ", formContext)
+        // .then(function success(result) {
+        //     console.log("Successfully connected to 'in23gl_student'. Number of records retrieved: ", result.entities.length);
+        // }, function(error) {
+        //     console.error("Error connecting to 'in23gl_student': ", error.message);
+        // });
 }
 
 
