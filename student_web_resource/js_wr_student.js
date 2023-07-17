@@ -14,7 +14,7 @@ const fetchStudents = (formContext) => {
     const columns = ['in23gl_firstname', 'in23gl_lastname', 'in23gl_dob', 'in23gl_email', 'in23gl_university'];
 
     // Retrieve data from the Students table
-    Xrm.WebApi.retrieveMultipleRecords('in23gl_students')
+    Xrm.WebApi.retrieveMultipleRecords('in23gl_student')
         .then(studentData => {
                 // Process the result
                 var table = document.getElementById('studentsTable');
