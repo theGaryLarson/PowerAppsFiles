@@ -6,6 +6,18 @@ function onLoad(context) {
     executionContext = context;
     formContext = context.getFormContext();
     console.log("formContextOnLoad: ", formContext);
+    Xrm.WebApi.retrieveMultipleRecords("in23gl_student").then(
+        function success(result) {
+            for (var i = 0; i < result.entities.length; i++) {
+                console.log("result: ", result.entities[i]);
+            }
+            // perform additional operations on retrieved records
+        },
+        function (error) {
+            console.log(error.message);
+            // handle error conditions
+        }
+    );
     fetchStudents(formContext); //todo: get this reading without throwing: Cannot read properties of null (reading 'insertRow')
 }
 
