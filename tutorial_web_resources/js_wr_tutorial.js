@@ -87,7 +87,8 @@ function deleteRow(button) {
     // TODO: remove html row after success on removal from db
     const id = row.cells[0].textContent;
     console.log("ID: ", id);
-    // Remove the row from the table
+    // Remove record from dataverse table
+    // on success remove record from table
     row.parentNode.removeChild(row);
 }
 
