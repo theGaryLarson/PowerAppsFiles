@@ -30,12 +30,13 @@ function fetchStudents() {
                 const universityCell = row.insertCell();
                 const actionCell = row.insertCell();
 
-                idCell.textContent = student.pKey;
-                firstNameCell.textContent = student.firstname;
-                lastNameCell.textContent = student.lastname;
-                dobCell.textContent = student.dob;
-                emailCell.textContent = student.email;
-                universityCell.textContent = student.university;
+                //access the data from the entities and assign to corresponding cell within the table
+                // idCell.textContent = student.pKey;
+                // firstNameCell.textContent = student.firstname;
+                // lastNameCell.textContent = student.lastname;
+                // dobCell.textContent = student.dob;
+                // emailCell.textContent = student.email;
+                // universityCell.textContent = student.university;
 
                 // Make the cells editable
                 idCell.contentEditable = 'true';
