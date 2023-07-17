@@ -9,87 +9,69 @@ function onLoad(context) {
     // fetchStudents(); //todo: get this reading without throwing: Cannot read properties of null (reading 'insertRow')
 }
 
-function fetchStudents(formContext) {
-    // this returns null, why?
-    console.log("formContextFetchStudents: ", formContext);
-    // in23gl_js_wr_student:16 Uncaught ReferenceError: Xrm is not defined
-    // at fetchStudents at HTMLButtonElement.onclick
-    // Xrm.WebApi.retrieveMultipleRecords('in23gl_student')
-    //     .then( studentData => {
-    //         console.log("StudentData: ", studentData);
-    //         console.log("studentData.entities: ", studentData.entities);
-    //     })
-    //     .catch(error => {
-    //         console.error(error)
-    //         console.log("ERROR");
-    //     });
+function fetchStudents() {
+    Xrm.WebApi.retrieveMultipleRecords('in23gl_student')
+        .then( studentData => {
+            console.log("StudentData: ", studentData);
+            console.log("studentData.entities: ", studentData.entities);
 
+            // Process the result
+            const table = document.getElementById('studentsTable');
 
-    // Process the result
-    const table = document.getElementById('studentsTable');
+            // Loop through the data and create a table row for each student
+            studentData.entities.forEach( student => {
 
-    // Loop through the data and create a table row for each student
-    students.forEach( student => {
+                const row = table.insertRow();
+                const idCell = row.insertCell()
+                const firstNameCell = row.insertCell();
+                const lastNameCell = row.insertCell();
+                const dobCell = row.insertCell();
+                const emailCell = row.insertCell();
+                const universityCell = row.insertCell();
+                const actionCell = row.insertCell();
 
-        const row = table.insertRow();
-        const idCell = row.insertCell()
-        const firstNameCell = row.insertCell();
-        const lastNameCell = row.insertCell();
-        const dobCell = row.insertCell();
-        const emailCell = row.insertCell();
-        const universityCell = row.insertCell();
-        const actionCell = row.insertCell();
+                idCell.textContent = student.pKey;
+                firstNameCell.textContent = student.firstname;
+                lastNameCell.textContent = student.lastname;
+                dobCell.textContent = student.dob;
+                emailCell.textContent = student.email;
+                universityCell.textContent = student.university;
 
-        idCell.textContent = student.pKey;
-        firstNameCell.textContent = student.firstname;
-        lastNameCell.textContent = student.lastname;
-        dobCell.textContent = student.dob;
-        emailCell.textContent = student.email;
-        universityCell.textContent = student.university;
+                // Make the cells editable
+                idCell.contentEditable = 'true';
+                firstNameCell.contentEditable = 'true';
+                lastNameCell.contentEditable = 'true';
+                dobCell.contentEditable = 'true';
+                emailCell.contentEditable = 'true';
+                universityCell.contentEditable = 'true';
 
-        // Make the cells editable
-        idCell.contentEditable = 'true';
-        firstNameCell.contentEditable = 'true';
-        lastNameCell.contentEditable = 'true';
-        dobCell.contentEditable = 'true';
-        emailCell.contentEditable = 'true';
-        universityCell.contentEditable = 'true';
+                // Create update button
+                const updateButton = document.createElement('button');
+                updateButton.textContent = 'Update';
+                updateButton.onclick = () => {
+                    // Handle update operation
+                    console.log('Update button clicked for student', student);
+                };
 
-        // Create update button
-        const updateButton = document.createElement('button');
-        updateButton.textContent = 'Update';
-        updateButton.onclick = () => {
-            // Handle update operation
-            console.log('Update button clicked for student', student);
-        };
+                // Create delete button
+                const deleteButton = document.createElement('button');
+                deleteButton.textContent = 'Delete';
+                deleteButton.onclick = () => {
+                    // Handle delete operation
+                    deleteRow(deleteButton);
+                };
 
-        // Create delete button
-        const deleteButton = document.createElement('button');
-        deleteButton.textContent = 'Delete';
-        deleteButton.onclick = () => {
-            // Handle delete operation
-
-
-
-            // Delete the record from the database
-            // Xrm.WebApi.deleteRecord('in23gl_students', idCell.textContent).then(
-            //     function success(result) {
-            //         console.log("Record deleted successfully");
-            //         // Perform operations on record deletion
-             deleteRow(deleteButton);
-            //     },
-            //     function(error) {
-            //         console.log(error.message);
-            //         // Handle the error
-            //     }
-            // );
-        };
-
-        // Add buttons to action cell
-        actionCell.appendChild(updateButton);
-        actionCell.appendChild(deleteButton);
-    });
+                // Add buttons to action cell
+                actionCell.appendChild(updateButton);
+                actionCell.appendChild(deleteButton);
+            });
+        })
+        .catch(error => {
+            console.error(error)
+            console.log("ERROR");
+        });
 }
+
 
 
 function createStudent() {
