@@ -8,7 +8,7 @@ function onLoad(context) {
     fetchStudents();
 }
 
-function fetchStudents() {
+const fetchStudents = (formContext) => {
     console.log("formContext: ", formContext);
     // Define the columns to retrieve
     const columns = ['in23gl_firstname', 'in23gl_lastname', 'in23gl_dob', 'in23gl_email', 'in23gl_university'];
