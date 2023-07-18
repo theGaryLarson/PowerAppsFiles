@@ -11,7 +11,6 @@ function onLoad(context) {
     const filter = `?$filter=in23gl_universityname eq '${universityName}'`;
     // console.log(universityName);
     Xrm.WebApi.retrieveMultipleRecords("in23gl_university", filter).then (
-
         function success(universityRows) {
             const universityId = universityRows.entities[0].in23gl_universityid;
             const idFilter = `?$filter=_in23gl_university_value eq '${universityId}'`;
