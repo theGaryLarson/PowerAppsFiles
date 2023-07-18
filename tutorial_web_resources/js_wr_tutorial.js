@@ -6,12 +6,27 @@ function onLoad(context) {
     executionContext = context;
     formContext = context.getFormContext();
     console.log("formContextOnLoad: ", formContext);
-    Xrm.WebApi.retrieveMultipleRecords("in23gl_student").then(
-        function success(result) {
-            for (var i = 0; i < result.entities.length; i++) {
-                console.log("result: ", result.entities[i]);
-            }
-            // perform additional operations on retrieved records
+
+    const  universityName = formContext.getAttribute("in23gl_universityname").getValue();
+    const filter = `?$filter=in23gl_universityname eq '${universityName}'`;
+    // console.log(universityName);
+    Xrm.WebApi.retrieveMultipleRecords("in23gl_university", filter).then (
+
+        function success(universityRows) {
+            const universityId = universityRows.entities[0].in23gl_universityid;
+            const idFilter = `?$filter=_in23gl_university_value eq '${universityId}'`;
+
+            Xrm.WebApi.retrieveMultipleRecords("in23gl_student", idFilter).then(
+                function success(students) {
+                    // perform additional operations on retrieved records
+                    fetchStudents(students);
+
+                },
+                function (error) {
+                    console.log(error.message);
+                    // handle error conditions
+                }
+            );
         },
         function (error) {
             console.log(error.message);
