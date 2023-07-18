@@ -33,7 +33,7 @@ function onLoad(context) {
             // handle error conditions
         }
     );
-    fetchStudents(formContext); //todo: get this reading without throwing: Cannot read properties of null (reading 'insertRow')
+
 }
 
 function fetchStudents(formContext) {
