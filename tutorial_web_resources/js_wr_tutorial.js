@@ -35,8 +35,8 @@ function onLoad(context) {
 
 }
 
-function fetchStudents(formContext) {
-        console.log("formContextFetchStudents: ", formContext)
+function fetchStudents(students) {
+        console.log("Students: ", students)
         // .then(function success(result) {
         //     console.log("Successfully connected to 'in23gl_student'. Number of records retrieved: ", result.entities.length);
         // }, function(error) {
