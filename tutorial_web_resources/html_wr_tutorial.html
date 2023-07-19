@@ -5,7 +5,7 @@
     <script src="/WebResources/in23gl_js_wr_student" type="text/javascript"></script>
     <link href="/WebResources/in23gl_css_wr_student" rel="stylesheet" type="text/css" />
 </head>
-<body onload=fetchStudents()>
+<body>
 <table id="studentsTable">
     <tr>
         <th>University ID</th>
@@ -18,7 +18,8 @@
     </tr>
     <!-- Rows will be added here from the JS file -->
 </table>
-<!--<button onclick="fetchStudents()">Build Table</button>-->
+<!--do not have access to Xrm library to call this within this file. Returns undefined when I try.-->
+<button onclick="fetchStudents()">Build Table</button>
 </body>
 </html>
 

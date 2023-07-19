@@ -1,5 +1,6 @@
 let formContext = null;
 let executionContext = null;
+let studentData = null;
 const apiEndpoint = 'https://cfainternship.api.crm.dynamics.com/api/data/v9.2/in23gl_students';
 
 function onLoad(context) {
@@ -9,15 +10,16 @@ function onLoad(context) {
 
     const  universityName = formContext.getAttribute("in23gl_universityname").getValue();
     const filter = `?$filter=in23gl_universityname eq '${universityName}'`;
-    // console.log(universityName);
+    // filter applies String value of selected university to get the id to create idFilter
     Xrm.WebApi.retrieveMultipleRecords("in23gl_university", filter).then (
         function success(universityRows) {
             const universityId = universityRows.entities[0].in23gl_universityid;
             const idFilter = `?$filter=_in23gl_university_value eq '${universityId}'`;
-
+            //idFilter is used to show only students belonging to the selected university
             Xrm.WebApi.retrieveMultipleRecords("in23gl_student", idFilter).then(
                 function success(students) {
                     // perform additional operations on retrieved records
+                    studentData = students;
                     fetchStudents(students);
 
                 },
@@ -36,12 +38,57 @@ function onLoad(context) {
 }
 
 function fetchStudents(students) {
-        console.log("Students: ", students)
-        // .then(function success(result) {
-        //     console.log("Successfully connected to 'in23gl_student'. Number of records retrieved: ", result.entities.length);
-        // }, function(error) {
-        //     console.error("Error connecting to 'in23gl_student': ", error.message);
-        // });
+        console.log("StudentData: ", students);
+        // Process the result
+        const table = document.getElementById('studentsTable');
+
+        // Loop through the data and create a table row for each student
+    students.forEach( student => {
+
+        const row = table.insertRow();
+        const idCell = row.insertCell()
+        const firstNameCell = row.insertCell();
+        const lastNameCell = row.insertCell();
+        const dobCell = row.insertCell();
+        const emailCell = row.insertCell();
+        const universityCell = row.insertCell();
+        const actionCell = row.insertCell();
+
+        //access the data from the entities and assign to corresponding cell within the table
+        idCell.textContent = student.in23gl_studentid;
+        firstNameCell.textContent = student.in23gl_firstname;
+        lastNameCell.textContent = student.in23gl_lastname;
+        dobCell.textContent = student.in23gl_dob;
+        emailCell.textContent = student.in23gl_email;
+
+        // Make the cells editable
+        idCell.contentEditable = 'true';
+        firstNameCell.contentEditable = 'true';
+        lastNameCell.contentEditable = 'true';
+        dobCell.contentEditable = 'true';
+        emailCell.contentEditable = 'true';
+        universityCell.contentEditable = 'true';
+
+        // Create update button
+        const updateButton = document.createElement('button');
+        updateButton.textContent = 'Update';
+        updateButton.onclick = () => {
+            // Handle update operation
+            console.log('Update button clicked for student', student);
+        };
+
+        // Create delete button
+        const deleteButton = document.createElement('button');
+        deleteButton.textContent = 'Delete';
+        deleteButton.onclick = () => {
+            // Handle delete operation
+            deleteRow(deleteButton);
+        };
+
+        // Add buttons to action cell
+        actionCell.appendChild(updateButton);
+        actionCell.appendChild(deleteButton);
+    });
 }
 
 
@@ -64,37 +111,4 @@ function deleteRow(button) {
     row.parentNode.removeChild(row);
 }
 
-let students = [
-    {
-        pKey: 1,
-        firstname: 'John',
-        lastname: 'Doe',
-        dob: '1990-01-01',
-        email: 'john.doe@example.com',
-        university: 'University A'
-    },
-    {
-        pKey: 2,
-        firstname: 'Jane',
-        lastname: 'Doe',
-        dob: '1991-02-02',
-        email: 'jane.doe@example.com',
-        university: 'University B'
-    },
-    {
-        pKey: 3,
-        firstname: 'Bob',
-        lastname: 'Smith',
-        dob: '1992-03-03',
-        email: 'bob.smith@example.com',
-        university: 'University C'
-    },
-    {
-        pKey: 4,
-        firstname: 'Alice',
-        lastname: 'Johnson',
-        dob: '1993-04-04',
-        email: 'alice.johnson@example.com',
-        university: 'University D'
-    }
-];
+
