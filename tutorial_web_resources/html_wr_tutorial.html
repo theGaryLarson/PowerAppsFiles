@@ -79,8 +79,8 @@
                 // Call Web API updateRecord method
                 const studentId = idCell.textContent;
                 xrm.WebApi.updateRecord("in23gl_student", studentId, updatedFields).then(
-                    function success(result) {
-                        console.log(`${result.in23gl_firstname} updated successfully`);
+                    function success() {
+                        console.log(`${updatedFields.in23gl_firstname} updated successfully`);
                     },
                     function(error) {
                         console.log(error.message);
@@ -98,7 +98,7 @@
 
                 // Call Web API deleteRecord method
                 xrm.WebApi.deleteRecord("in23gl_student", studentId).then(
-                    function success(result) {
+                    function success() {
                         console.log("Delete successful");
 
                         // Remove row from table
