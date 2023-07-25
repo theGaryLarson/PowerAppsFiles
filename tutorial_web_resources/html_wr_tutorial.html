@@ -8,7 +8,7 @@
 <body>
 <table id="studentsTable">
     <tr>
-        <th>University ID</th>
+        <th>Student ID</th>
         <th>First Name</th>
         <th>Last Name</th>
         <th>DOB</th>
@@ -18,8 +18,134 @@
     </tr>
     <!-- Rows will be added here from the JS file -->
 </table>
-<!--do not have access to Xrm library to call this within this file. Returns undefined when I try.-->
-<button onclick="fetchStudents()">Build Table</button>
+<script>
+    <!-- The `window.fetchStudents` function is responsible for populating the table with student data. -->
+    window.fetchStudents = function(students) {
+        console.log("StudentDataHTML: ", students);
+        // Process the result
+        const table = document.getElementById('studentsTable');
+
+
+        console.log(lookupData);
+
+                // Loop through the data and create a table row for each student
+        students.entities.forEach( student => {
+
+            const row = table.insertRow();
+            const idCell = row.insertCell()
+            const firstNameCell = row.insertCell();
+            const lastNameCell = row.insertCell();
+            const dobCell = row.insertCell();
+            const emailCell = row.insertCell();
+            const universityCell = row.insertCell();
+            const actionCell = row.insertCell();
+
+            //access the data from the entities and assign to corresponding cell within the table
+            idCell.textContent = student.in23gl_studentid;
+            firstNameCell.textContent = student.in23gl_firstname;
+            lastNameCell.textContent = student.in23gl_lastname;
+            dobCell.textContent = student.in23gl_dob;
+            emailCell.textContent = student.in23gl_email;
+            universityCell.textContent = lookupData.universities[0].in23gl_universityname;
+
+            // Make the cells editable
+            firstNameCell.contentEditable = 'true';
+            lastNameCell.contentEditable = 'true';
+            dobCell.contentEditable = 'true';
+            emailCell.contentEditable = 'true';
+
+            // Create update button
+            const updateButton = document.createElement('button');
+            updateButton.textContent = 'Update';
+            updateButton.onclick = () => {
+
+                // Get updated values from cells
+                const updatedFirstName = firstNameCell.textContent;
+                const updatedLastName = lastNameCell.textContent;
+                const updatedDob = dobCell.textContent;
+                const updatedEmail = emailCell.textContent;
+                // const updatedUniversity  = lookupData.universities[0]
+
+                // console.log(updatedUniversity);
+                // Create updated Student entity
+                const updatedFields = {
+                    in23gl_firstname: updatedFirstName,
+                    in23gl_lastname: updatedLastName,
+                    in23gl_dob: updatedDob,
+                    in23gl_email: updatedEmail,
+                    // in23gl_university: updatedUniversity
+                };
+
+                // Call Web API updateRecord method
+                const studentId = idCell.textContent;
+                xrm.WebApi.updateRecord("in23gl_student", studentId, updatedFields).then(
+                    function success(result) {
+                        console.log(`${result.in23gl_firstname} updated successfully`);
+                    },
+                    function(error) {
+                        console.log(error.message);
+                    }
+                );
+
+            };
+
+            // Create delete button
+            const deleteButton = document.createElement('button');
+            deleteButton.textContent = 'Delete';
+            deleteButton.onclick = () => {
+                // Get student ID
+                const studentId = idCell.textContent;
+
+                // Call Web API deleteRecord method
+                xrm.WebApi.deleteRecord("in23gl_student", studentId).then(
+                    function success(result) {
+                        console.log("Delete successful");
+
+                        // Remove row from table
+                        deleteRow(deleteButton);
+
+                    },
+                    function(error) {
+                        console.log(error.message);
+                    }
+                );
+
+            };
+
+            // Add buttons to action cell
+            actionCell.appendChild(updateButton);
+            actionCell.appendChild(deleteButton);
+        });
+        const addButton = document.createElement('button');
+        addButton.classList.add('add-button')
+        addButton.textContent = 'Add';
+        addButton.onClick = () => {
+            const newRow = table.insertRow();
+            newRow.insertCell();
+            newRow.insertCell();
+            newRow.insertCell();
+            newRow.insertCell();
+            newRow.insertCell();
+            const university = lookupData.universities[0];
+            const universityCell = newRow.insertCell();
+            universityCell.textContent = university.in23gl_universityname;
+            const actionCell = newRow.insertCell;
+            actionCell.appendChild(updateButton);
+            actionCell.appendChild(deleteButton);
+
+        };
+        table.after(addButton);
+
+    }
+    // Helper function to remove row
+    function deleteRow(button) {
+
+        const row = button.parentNode.parentNode;
+        row.parentNode.removeChild(row);
+
+    }
+</script>
+
 </body>
 </html>
 
