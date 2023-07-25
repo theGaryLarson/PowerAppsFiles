@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Students</title>
+    <script src="/WebResources/in23gl_js_wr_student" type="text/javascript"></script>
+    <link href="/WebResources/in23gl_css_wr_student" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<table id="studentsTable">
+    <tr>
+        <th>Student ID</th>
+        <th>First Name</th>
+        <th>Last Name</th>
+        <th>DOB</th>
+        <th>Email</th>
+        <th>University</th>
+        <th>Actions</th>
+    </tr>
+    <!-- Rows will be added here from the JS file -->
+</table>
+<script>
+    <!-- The `window.fetchStudents` function is responsible for populating the table with student data. -->
+    window.fetchStudents = function(students) {
+        console.log("StudentDataHTML: ", students);
+        // Process the result
+        const table = document.getElementById('studentsTable');
+
+        // Loop through the data and create a table row for each student
+        students.entities.forEach( student => {
+            const row = table.insertRow();
+            //access the data from the entities and assign to corresponding cell within the table
+            const idCell = row.insertCell()
+            const firstNameCell = row.insertCell()
+            const lastNameCell = row.insertCell()
+            const dobCell = row.insertCell()
+            const emailCell = row.insertCell()
+            const universityCell = row.insertCell()
+            const actionCell = row.insertCell();
+
+            idCell.textContent = student.in23gl_studentid;
+            firstNameCell.textContent = student.in23gl_firstname;
+            lastNameCell.textContent = student.in23gl_lastname;
+            dobCell.textContent = student.in23gl_dob;
+            emailCell.textContent = student.in23gl_email;
+            universityCell.textContent = lookupData.universities[0].in23gl_universityname;
+
+            firstNameCell.contentEditable = 'true';
+            lastNameCell.contentEditable = 'true';
+            dobCell.contentEditable = 'true';
+            emailCell.contentEditable = 'true';
+
+            const updateButton = createButton('Update');
+            updateButton.onClick = () => updateEntity(row);
+
+            const deleteButton = createButton('Delete');
+            deleteButton.onclick = () => deleteEntity(row);
+
+            actionCell.appendChild(updateButton);
+            actionCell.appendChild(deleteButton);
+        });
+        const addButton = createButton('Add');
+        addButton.onclick = function() {
+            createRow(table);
+        }
+        table.after(addButton);
+
+    }
+    // Create add button
+    function createButton(textContent) {
+        const button = document.createElement('button');
+        button.textContent = textContent;
+        return button;
+    }
+    function updateEntity(row) {
+
+        // Get updated values
+        const firstNameCell = row.cells[1];
+        console.log(firstNameCell);
+        const lastNameCell = row.cells[2];
+        const dobCell = row.cells[3];
+        const emailCell = row.cells[4];
+
+
+        const updatedFields = {
+            in23gl_firstname: firstNameCell.textContent,
+            in23gl_lastname: lastNameCell.textContent,
+            in23gl_dob: dobCell.textContent,
+            in23gl_email: emailCell.textContent
+        };
+
+        const studentId = row.cells[0].textContent;
+
+        xrm.WebApi.updateRecord("in23gl_student", studentId, updatedFields)
+            .then(
+                function success() {
+                    console.log("Updated Successfully!");
+                },
+                function error(error) {
+                    console.log(error.message);
+                }
+            );
+
+    }
+    function deleteEntity(row) {
+
+        const studentId = row.cells[0].textContent;
+
+        xrm.WebApi.deleteRecord("in23gl_student", studentId).then(
+            function success() {
+                console.log("Deleted");
+                deleteRow(row);
+            },
+            function error(error) {
+                console.log(error);
+            }
+        );
+
+    }
+    function deleteRow(row) {
+        row.remove();
+    }
+    function createRow(table) {
+        // Insert blank extra row
+        const blankRow = table.insertRow();
+
+        // Add blank cells
+        blankRow.insertCell();
+        blankRow.insertCell().contentEditable = 'true';
+        blankRow.insertCell().contentEditable = 'true';
+        blankRow.insertCell().contentEditable = 'true';
+        blankRow.insertCell().contentEditable = 'true';
+        blankRow.insertCell();
+        const actionCell = blankRow.insertCell();
+
+        // Create buttons for extra row
+        const addUpdateBtn = createUpdateButton(blankRow);
+        addUpdateBtn.onclick = function () {
+            updateEntity(blankRow);
+        }
+        const addDeleteBtn = createDeleteButton(blankRow);
+        addDeleteBtn.onclick = function () {
+            deleteEntity(blankRow);
+        }
+
+        // Append to extra row
+        actionCell.appendChild(addUpdateBtn);
+        actionCell.appendChild(addDeleteBtn);
+    }
+
+</script>
+
+</body>
+</html>
+
