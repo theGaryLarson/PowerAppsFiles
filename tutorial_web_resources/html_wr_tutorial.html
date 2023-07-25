@@ -26,7 +26,7 @@
         const table = document.getElementById('studentsTable');
 
 
-        console.log(lookupData);
+        console.log("lookupData: ", lookupData);
 
                 // Loop through the data and create a table row for each student
         students.entities.forEach( student => {
@@ -46,7 +46,7 @@
             lastNameCell.textContent = student.in23gl_lastname;
             dobCell.textContent = student.in23gl_dob;
             emailCell.textContent = student.in23gl_email;
-            universityCell.textContent = lookupData.universities[0].in23gl_universityname;
+            universityCell.textContent = lookupData.universityEntity.in23gl_universityname;
 
             // Make the cells editable
             firstNameCell.contentEditable = 'true';
@@ -64,7 +64,7 @@
                 const updatedLastName = lastNameCell.textContent;
                 const updatedDob = dobCell.textContent;
                 const updatedEmail = emailCell.textContent;
-                // const updatedUniversity  = lookupData.universities[0]
+                // const updatedUniversity  = lookupData.universityEntity
 
                 // console.log(updatedUniversity);
                 // Create updated Student entity

@@ -9,7 +9,7 @@ const XRM = {
     WebApi: Xrm.WebApi
 };
 
-const lookUpValues = {};
+const lookUpValue = {};
 /**
  * The onLoad function retrieves university and student data based on a filter, and then passes the student data to an HTML
  * web resource control.
@@ -27,7 +27,7 @@ function onLoad(context) {
 
     Xrm.WebApi.retrieveMultipleRecords("in23gl_university", filter).then (
         function success(universityRows) {
-            lookUpValues.universities = universityRows.entities[0];
+            lookUpValue.universityEntity = universityRows.entities[0];
             const universityId = universityRows.entities[0].in23gl_universityid;
             const idFilter = `?$filter=_in23gl_university_value eq '${universityId}'`;
 
@@ -43,9 +43,9 @@ function onLoad(context) {
                         function success(contentWindow) {
                         // Call the fetchStudents function in the HTML web resource
                             contentWindow.xrm = XRM;
-                            contentWindow.lookupData = lookUpValues;
+                            contentWindow.lookupData = lookUpValue;
                             contentWindow.fetchStudents(studentData);
-                            console.log('lookUpValues', lookUpValues)
+                            console.log('lookUpValue', lookUpValue)
                             console.log("CNTWIN: ", contentWindow)
                         },
                         function error(error) {
