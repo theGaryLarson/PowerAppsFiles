@@ -1,14 +1,16 @@
 
-
 /**
  * The code `const xrm = { WebApi: Xrm.WebApi };` is creating a constant variable `xrm` and assigning it an object with a
  * property `WebApi`. The value of the `WebApi` property is `Xrm.WebApi`, which is  a reference to the Xrm library.This
- * allows the code to access the Web API functionality through the `xrm` object.
+ * allows us to access the Web API functionality through the `xrm` object in the html web resource.
  * */
 const XRM = {
     WebApi: Xrm.WebApi
 };
 
+/* The line `const lookUpValue = {};` is creating a constant variable `lookUpValue` and assigning it an empty object `{}`.
+This object can be used to store lookup values or any other data that needs to be passed between functions or accessed
+globally within the code. */
 const lookUpValue = {};
 /**
  * The onLoad function retrieves university and student data based on a filter, and then passes the student data to an HTML
