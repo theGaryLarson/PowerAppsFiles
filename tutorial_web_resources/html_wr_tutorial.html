@@ -1,3 +1,5 @@
+<!-- The code provided is an HTML document that creates a table to display student data. It includes JavaScript code that
+populates the table with data and provides functionality to update and delete student records. -->
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -28,7 +30,7 @@
 
         console.log("lookupData: ", lookupData);
 
-                // Loop through the data and create a table row for each student
+        // Loop through the data and create a table row for each student
         students.entities.forEach( student => {
 
             const row = table.insertRow();
@@ -64,6 +66,7 @@
                 const updatedLastName = lastNameCell.textContent;
                 const updatedDob = dobCell.textContent;
                 const updatedEmail = emailCell.textContent;
+                // TODO: refactor so user can choose a University using lookup into the University table
                 // const updatedUniversity  = lookupData.universityEntity
 
                 // console.log(updatedUniversity);
