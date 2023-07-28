@@ -104,7 +104,30 @@
             );
 
     }
-
+    /**
+     * Updates a student entity in Dataverse
+     *
+     * @param {HTMLTableRowElement} row - The row element representing the student record to update
+     *
+     * The function does the following:
+     *
+     * 1. Gets the updated values from the row cells
+     *
+     * 2. Creates an object with the updated fields to pass to the updateRecord API
+     *
+     * 3. Gets the student ID from the first cell
+     *
+     * 4. Calls the Web API updateRecord method to update the student record in Dataverse
+     *
+     * 5. Handles the success and error callbacks from the API call
+     *
+     * The updatedFields object contains:
+     *
+     * - in23gl_firstname
+     * - in23gl_lastname
+     * - in23gl_dob
+     * - in23gl_email
+     */
     function updateEntity(row) {
         // Get updated values
         const firstNameCell = row.cells[1];
