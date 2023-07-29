@@ -16,3 +16,13 @@ th {
     background-color: #d83b00;
     color: white;
 }
+
+button {
+    margin-right: 10px;
+}
+
+.add-button {
+    position: relative;
+    margin-top: 10px;
+    width: 200px
+}
