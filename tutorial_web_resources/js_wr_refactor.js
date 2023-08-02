@@ -10,14 +10,24 @@ let executionContext = null;
 function handleWindowContent(contentWindow) {
     contentWindow.xrm = XRM;
     contentWindow.lookupData = lookUpValue;
-    contentWindow.fetchStudents(studentData);
     console.log('lookUpValue', lookUpValue)
     console.log("CNTWIN: ", contentWindow)
+    contentWindow.fetchStudents(studentData);
 }
 
 function handleError(error) {
     console.log(error.message);
-    // TODO: Display error message to the user
+    const alertStrings = { confirmButtonLabel: "Ok",
+        text: "Created Student Successfully with ID " + result.id,
+        title: "Update Alert" };
+    Xrm.Navigation.openErrorDialog({ message: error.message }).then(
+        function (success) {
+            console.log("Error dialog closed");
+        },
+        function (error) {
+            console.log("An error occurred while opening the error dialog: ", error.message);
+        }
+    );
 }
 
 function handleStudentRecords(students) {
