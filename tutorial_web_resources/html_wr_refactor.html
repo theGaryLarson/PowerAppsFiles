@@ -47,11 +47,11 @@
 
                 idCell.textContent = student.in23gl_studentid;
                 firstNameCell.textContent = student.in23gl_firstname;
+
                 lastNameCell.textContent = student.in23gl_lastname;
 
                 const date = new Date(student.in23gl_dob);
-                dobCell.textContent = date.toLocaleDateString();
-
+                dobCell.textContent = date.toLocaleDateString(undefined, {timeZone: 'UTC'});
                 emailCell.textContent = student.in23gl_email;
                 universityCell.textContent = lookupData.universityEntity.in23gl_universityname;
                 universityRef =  {
@@ -79,6 +79,7 @@
             table.after(addButton);
         } catch (error) {
             console.error(error);
+            openErrorDialog("An error occurred while fetching the students.");
         }
     }
     // Create add button
@@ -88,7 +89,7 @@
         return button;
     }
 
-    async function createEntity(row, universityEntityRef) {
+    async function createEntity(row) {
         try {
             // Get updated values
             const firstNameCell = row.cells[1];
@@ -99,7 +100,7 @@
             const updatedFields = {
                 "in23gl_firstname": firstNameCell.textContent,
                 "in23gl_lastname": lastNameCell.textContent,
-                "in23gl_dob": new Date(dobCell.textContent),
+                "in23gl_dob": new Date(dobCell.textContent).toLocaleDateString(undefined, {timeZone: 'UTC'}),
                 "in23gl_email": emailCell.textContent,
                 // Associate to the university lookup value use the navigation property see pic
                 "in23gl_University@odata.bind": "/in23gl_universities(" + lookupData.universityEntity.in23gl_universityid +")"
@@ -108,8 +109,14 @@
 
             const result = await xrm.WebApi.createRecord("in23gl_student", updatedFields);
             console.log("Created Student Successfully with ID " + result.id);
+            const alertStrings = { confirmButtonLabel: "Ok",
+                text: "Created Student Successfully with ID " + result.id,
+                title: "Update Alert" };
+            openAlertDialog(alertStrings);
+
         } catch (error) {
-            console.error(error.message);
+            openErrorDialog("An error occurred while creating the student.");
+            console.log(error.message);
         }
     }
 
@@ -120,7 +127,6 @@
             const lastNameCell = row.cells[2];
             const dobCell =  row.cells[3];
             const emailCell = row.cells[4];
-
             const updatedFields = {
                 in23gl_firstname: firstNameCell.textContent,
                 in23gl_lastname: lastNameCell.textContent,
@@ -128,12 +134,14 @@
                 in23gl_email: emailCell.textContent
             };
             console.log('updatedFields', updatedFields)
+            // Compare current and updated values
             const studentId = row.cells[0].textContent;
-
             await xrm.WebApi.updateRecord("in23gl_student", studentId, updatedFields);
-            console.log("Updated Successfully!");
+            const alertStrings = { confirmButtonLabel: "Ok", text: "Entity updated successfully!", title: "Update Alert" };
+            openAlertDialog(alertStrings);
         } catch (error) {
             console.error(error.message);
+            openErrorDialog("An error occurred while updating the student.")
         }
     }
 
@@ -141,16 +149,28 @@
         try {
             const studentId = row.cells[0].textContent;
             if (studentId !== "") {
-                await xrm.WebApi.deleteRecord("in23gl_student", studentId);
-                console.log("Deleted");
-                deleteRow(row);
+                var confirmStrings = { text:"This will delete the entity. Are you sure you want to proceed?", title:"Delete Entity" };
+                var confirmOptions = { height: 200, width: 450 };
+                window.parent.Xrm.Navigation.openConfirmDialog(confirmStrings, confirmOptions).then(
+                    function (success) {
+                        if (success.confirmed) {
+                            xrm.WebApi.deleteRecord("in23gl_student", studentId);
+                            deleteRow(row);
+                            console.log("Deleted");
+                        }
+                        else
+                            console.log("Dialog closed using Cancel button or X.");
+                    });
+
             } else {
-                deleteRow(row);
+
             }
         } catch (error) {
             console.error(error);
+            openErrorDialog("An error occurred while fetching the students.");
         }
     }
+
 
     function deleteRow(row) {
         row.remove();
@@ -184,6 +204,56 @@
         actionCell.appendChild(addUpdateBtn);
         actionCell.appendChild(addDeleteBtn);
     }
+
+    function openErrorDialog(errorMessage) {
+        window.parent.Xrm.Navigation.openErrorDialog({ message: errorMessage }).then(
+            function (success) {
+                console.log("Error dialog closed");
+            },
+            function (error) {
+                console.log("An error occurred while opening the error dialog: ", error.message);
+            }
+        );
+    }
+
+    function openAlertDialog(alertStrings) {
+        const alertOptions = { height: 120, width: 260 };
+        window.parent.Xrm.Navigation.openAlertDialog(alertStrings, alertOptions).then(
+            function (success) {
+                console.log("Updated Successfully!");
+            },
+            function (error) {
+                console.log("ErrorMessage: ", error.message);
+            }
+        )
+    }
+
+
+    function objectsAreEqual(obj1, obj2) {
+        // Check if both objects are null or undefined
+        if (obj1 == null || obj2 == null) return obj1 === obj2;
+
+        // Get the keys of both objects
+        const keys1 = Object.keys(obj1);
+        const keys2 = Object.keys(obj2);
+
+        // Check if the number of properties is the same
+        if (keys1.length !== keys2.length) return false;
+
+        // Check if the values of the properties are the same
+        for (let key of keys1) {
+            if (typeof obj1[key] === 'object' && typeof obj2[key] === 'object') {
+                // If the property is an object, recursively compare
+                if (!objectsAreEqual(obj1[key], obj2[key])) return false;
+            } else if (obj1[key] !== obj2[key]) {
+                // If the property is not an object, use strict equality
+                return false;
+            }
+        }
+
+        return true;
+    }
+
 </script>
 
 </body>
