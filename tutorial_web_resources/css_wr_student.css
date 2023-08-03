@@ -1,28 +1,23 @@
-table {
-    border-collapse: collapse;
-    width: 100%;
+/*body {*/
+/*    background-color: #f4f8fb;*/
+/*}*/
+tr:nth-of-type(odd) {
+    background-color: rgba(96, 150, 208, 0.47);
 }
-
-th, td {
-    text-align: left;
-    padding: 8px;
+.btn-rounded {
+    border-radius: 10px;
 }
-
-tr:nth-child(even) {
-    background-color: #eec5c5;
+.btn-primary:hover {
+    background-color: #007bff;
+    border-color: #007bff;
 }
-
-th {
-    background-color: #d83b00;
+#studentsTable th {
+    background-color: #007bff;
     color: white;
 }
-
-button {
-    margin-right: 10px;
-}
-
-.add-button {
-    position: relative;
-    margin-top: 10px;
-    width: 200px
+.container {
+    background-color: white;
+    padding: 5px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
