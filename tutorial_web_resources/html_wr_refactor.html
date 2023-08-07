@@ -253,21 +253,22 @@
                 );
             }
             // fix: this is not registering the event listener when double clicking a row
-            $("#studentsTable tr").dblclick(function() {
-                 let entityFormOptions = {};
-                let guid = $(this).find('td').eq(0).text();
-                entityFormOptions["entityName"] = "in23gl_student";
-                entityFormOptions["entityId"] = guid;
-                try {
-                    window.parent.Xrm.Navigation.openForm(entityFormOptions);
-                } catch (error) {
-                    openErrorDialog({
-                        message: error.message,
-                        errorCode: error.errorCode,
-                        details: error.message
-                    });
-                }
-            });
+            // commented out this portion in case it is causing visibility issues.
+            // $("#studentsTable tr").dblclick(function() {
+            //      let entityFormOptions = {};
+            //     let guid = $(this).find('td').eq(0).text();
+            //     entityFormOptions["entityName"] = "in23gl_student";
+            //     entityFormOptions["entityId"] = guid;
+            //     try {
+            //         window.parent.Xrm.Navigation.openForm(entityFormOptions);
+            //     } catch (error) {
+            //         openErrorDialog({
+            //             message: error.message,
+            //             errorCode: error.errorCode,
+            //             details: error.message
+            //         });
+            //     }
+            // });
 
             function openCreateForm() {
                 try {
