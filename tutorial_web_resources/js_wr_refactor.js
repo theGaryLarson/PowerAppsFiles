@@ -5,7 +5,6 @@
  * allows you to access and manipulate the content of the web resource. In this code, it is used to pass the `XRM` object
  * and the `lookUpValue` object to the web resource
  */
-const XRM = { WebApi: Xrm.WebApi };
 const lookUpValue = {};
 
 let formContext = null;
@@ -18,7 +17,6 @@ let executionContext = null;
  * an iframe or a popup window. It allows you to access and manipulate the content within that window.
  */
 function handleWindowContent(contentWindow) {
-    contentWindow.xrm = XRM;
     contentWindow.lookupData = lookUpValue;
     console.log('lookUpValue', lookUpValue);
     console.log('CNTWIN:', contentWindow);
@@ -64,8 +62,8 @@ function handleUniversityRecords(universityRows) {
 }
 
 /**
- * The function retrieves multiple records from the "in23gl_university" entity based on the value of the
- * "in23gl_universityname" attribute and handles the retrieved records.
+ * The function retrieves the "in23gl_university" entity based on the value of the
+ * "in23gl_universityname" attribute selected in the University Main Form and handles the retrieved records.
  * @param context - The `context` parameter is the execution context of the form. It provides access to various methods and
  * properties related to the form and its data. In this case, it is used to get the form context using the
  * `getFormContext()` method.
