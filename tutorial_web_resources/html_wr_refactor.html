@@ -92,7 +92,6 @@
             }
 
             // Create button
-            // Create button
             function newButton(textContent) {
                 const button = document.createElement('button');
                 button.textContent = textContent;
@@ -119,7 +118,7 @@
                         "in23gl_University@odata.bind": "/in23gl_universities(" + lookupData.universityEntity.in23gl_universityid +")"
                     };
 
-                    const result = await xrm.WebApi.createRecord("in23gl_student", updatedFields)
+                    const result = await window.parent.Xrm.WebApi.createRecord("in23gl_student", updatedFields)
                     row.cells[0].textContent = result.id;
 
                     const actionCell = row.cells[6];
@@ -162,7 +161,7 @@
                     console.log('updatedFields', updatedFields)
                     // Compare current and updated values
                     const studentId = row.cells[0].textContent;
-                    await xrm.WebApi.updateRecord("in23gl_student", studentId, updatedFields);
+                    await window.parent.Xrm.WebApi.updateRecord("in23gl_student", studentId, updatedFields);
                     const alertStrings = { confirmButtonLabel: "Ok", text: "Entity updated successfully!", title: "Update Entity" };
                     openAlertDialog(alertStrings);
                 } catch (error) {
@@ -184,7 +183,7 @@
                         window.parent.Xrm.Navigation.openConfirmDialog(confirmStrings, confirmOptions).then(
                             function (success) {
                                 if (success.confirmed) {
-                                    xrm.WebApi.deleteRecord("in23gl_student", studentId);
+                                    window.parent.Xrm.WebApi.deleteRecord("in23gl_student", studentId);
                                     deleteRow(row);
                                     console.log("Deleted");
                                 }
@@ -196,11 +195,6 @@
 
                     }
                 } catch (error) {
-                    const errorOptions = {
-                        message: error.message,
-                        errorCode: error.errorCode,
-                        details: error.message
-                    }
                     openErrorDialog({
                         message: error.message,
                         errorCode: error.errorCode,
